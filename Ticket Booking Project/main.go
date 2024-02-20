@@ -16,6 +16,9 @@ func main() {
 	fmt.Println("Welcome to the", conferenceName, "booking system.")
 	fmt.Println("We have", remainingTickets, "tickets remaining for the", conferenceName, "out of", conferenceTicket, "tickets.")
 
+	// Use to repeat a string multiple times
+	fmt.Println(strings.Repeat("-", 75))
+
 	for {
 		// Declare variables
 		var firstName string
@@ -36,8 +39,16 @@ func main() {
 		fmt.Print("Enter the number of tickets you want to book: ")
 		fmt.Scan(&userTicket)
 
-		// If the user tries to book more tickets than are available, ask them to try again
-		if userTicket <= remainingTickets {
+		// Validate the user's input
+		var validName = len(firstName) > 2 && len(lastName) > 2
+
+		// Use to check if a string contains a substring
+		var validEmail = strings.Contains(email, "@") && strings.Contains(email, ".")
+
+		var validTicket = userTicket > 0 && userTicket <= remainingTickets
+
+		// If the user data is valid, book the tickets
+		if validName && validEmail && validTicket {
 			fmt.Println("\nThank you", firstName, lastName, "for booking", userTicket, "tickets for the", conferenceName)
 
 			// reduce the number of tickets
@@ -52,20 +63,31 @@ func main() {
 			firstNames := []string{}
 			// _ is a blank identifier used to ignore the index
 			for _, name := range bookings {
+
+				// Use to split a string into substrings
 				var first = strings.Fields(name)
+
 				firstNames = append(firstNames, first[0])
 			}
 
-			fmt.Println("The following people have booked tickets for the", conferenceName, ":", firstNames)
+			fmt.Println("\nThe following people have booked tickets for the", conferenceName, ":", firstNames)
 
 		} else {
-			fmt.Println("Sorry, there are only", remainingTickets, "tickets remaining and you have tried to book", userTicket, "tickets.")
+			if !validName {
+				fmt.Println("\nSorry, your name is invalid. Please try again.")
+			}
+			if !validEmail {
+				fmt.Println("\nSorry, your email is invalid. Please try again.")
+			}
+			if !validTicket {
+				fmt.Println("\nSorry, the number of tickets you want to book is invalid. Please try again.")
+			}
 			continue
 		}
 
 		// If there are no tickets remaining, stop the loop
 		if remainingTickets == 0 {
-			fmt.Println("Sorry, there are no tickets remaining for the", conferenceName)
+			fmt.Println("\nSorry, there are no tickets remaining for the", conferenceName)
 			break
 		}
 	}
