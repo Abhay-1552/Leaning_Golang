@@ -1,0 +1,13 @@
+Golang
+
+Go programns are organized into packages.
+
+
+1. To initialize the module before working
+
+    go mod init <module/file name>
+
+2. To run go files
+
+    go run <file_name>
+
