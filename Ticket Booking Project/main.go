@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 
@@ -13,7 +16,7 @@ func main() {
 	fmt.Println("Welcome to the", conferenceName, "booking system.")
 	fmt.Println("We have", remainingTickets, "tickets remaining for the", conferenceName, "out of", conferenceTicket, "tickets.")
 
-	for i := 0; i < 2; i++ {
+	for {
 		// Declare variables
 		var firstName string
 		var lastName string
@@ -33,22 +36,37 @@ func main() {
 		fmt.Print("Enter the number of tickets you want to book: ")
 		fmt.Scan(&userTicket)
 
-		fmt.Println("\nThank you", firstName, lastName, "for booking", userTicket, "tickets for the", conferenceName)
+		// If the user tries to book more tickets than are available, ask them to try again
+		if userTicket <= remainingTickets {
+			fmt.Println("\nThank you", firstName, lastName, "for booking", userTicket, "tickets for the", conferenceName)
 
-		// reduce the number of tickets
-		remainingTickets = remainingTickets - userTicket
+			// reduce the number of tickets
+			remainingTickets = remainingTickets - userTicket
 
-		fmt.Println("We have", remainingTickets, "tickets remaining for the", conferenceName, "out of", conferenceTicket, "tickets.")
+			fmt.Println("We have", remainingTickets, "tickets remaining for the", conferenceName, "out of", conferenceTicket, "tickets.")
 
-		// Add the user to the bookings array
-		var fullName = firstName + " " + lastName
-		bookings = append(bookings, fullName)
+			// Add the user to the bookings array
+			var fullName = firstName + " " + lastName
+			bookings = append(bookings, fullName)
 
-		firstNames := []string{}
-		firstNames = append(firstNames, firstName)
+			firstNames := []string{}
+			// _ is a blank identifier used to ignore the index
+			for _, name := range bookings {
+				var first = strings.Fields(name)
+				firstNames = append(firstNames, first[0])
+			}
 
-		fmt.Println("The following people have booked tickets for the", conferenceName, ":", firstNames)
+			fmt.Println("The following people have booked tickets for the", conferenceName, ":", firstNames)
+
+		} else {
+			fmt.Println("Sorry, there are only", remainingTickets, "tickets remaining and you have tried to book", userTicket, "tickets.")
+			continue
+		}
+
+		// If there are no tickets remaining, stop the loop
+		if remainingTickets == 0 {
+			fmt.Println("Sorry, there are no tickets remaining for the", conferenceName)
+			break
+		}
 	}
-
-	// fmt.Println("\nThe following people have booked tickets for the", conferenceName, "conference:", bookings)
 }
