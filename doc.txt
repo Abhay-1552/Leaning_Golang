@@ -11,3 +11,13 @@ Go programns are organized into packages.
 
     go run <file_name>
 
+You need to tell Go compiler, the data types when declaring the new variable. But, Go can infer the type when you assign a value.
+
+    var variableName = "Variable"
+
+    or 
+
+    var variableName string
+    variableName = "Variable"
+
+(for more check variable declaration folder)
