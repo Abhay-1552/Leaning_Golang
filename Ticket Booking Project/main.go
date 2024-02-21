@@ -24,19 +24,18 @@ func main() {
 
 		// If the user data is valid, book the tickets
 		if isValidName && isValidEmail && isValidTicket {
-			fmt.Println("\nThank you", firstName, lastName, "for booking", userTicket, "tickets for the", conferenceName)
-
-			// reduce the number of tickets
-			remainingTickets = remainingTickets - userTicket
-
-			fmt.Println("We have", remainingTickets, "tickets remaining for the", conferenceName, "out of", conferenceTicket, "tickets.")
-
-			// Add the user to the bookings array
-			var fullName = firstName + " " + lastName
-			bookings = append(bookings, fullName)
-
+			// function to book tickets
+			var bookings, remainingTickets = bookTickets(firstName, lastName, userTicket, conferenceName, remainingTickets)
+			
+			// function to print the first name of the people who have booked tickets
 			var firstNames = printFirstName(bookings, conferenceName)
 			fmt.Println("\nThe following people have booked tickets for the", conferenceName, ":", firstNames)
+
+			// If there are no tickets remaining, stop the loop
+			if remainingTickets == 0 {
+				fmt.Println("\nSorry, there are no tickets remaining for the", conferenceName)
+				break
+			}
 
 		} else {
 			if !isValidName {
@@ -49,12 +48,6 @@ func main() {
 				fmt.Println("\nSorry, the number of tickets you want to book is invalid. Please try again.")
 			}
 			continue
-		}
-
-		// If there are no tickets remaining, stop the loop
-		if remainingTickets == 0 {
-			fmt.Println("\nSorry, there are no tickets remaining for the", conferenceName)
-			break
 		}
 	}
 }
@@ -115,4 +108,20 @@ func printFirstName(bookings []string, conferenceName string) []string {
 		firstNames = append(firstNames, first[0])
 	}
 	return firstNames
+}
+
+// function for booking tickets
+func bookTickets(firstName string, lastName string, userTicket uint, conferenceName string, remainingTickets uint) ([]string, uint) {
+	fmt.Println("\nThank you", firstName, lastName, "for booking", userTicket, "tickets for the", conferenceName)
+
+	// reduce the number of tickets
+	remainingTickets = remainingTickets - userTicket
+
+	fmt.Println("We have", remainingTickets, "tickets remaining for the", conferenceName, "out of", conferenceTicket, "tickets.")
+
+	// Add the user to the bookings array
+	var fullName = firstName + " " + lastName
+	bookings = append(bookings, fullName)
+
+	return bookings, remainingTickets
 }
