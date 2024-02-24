@@ -20,15 +20,15 @@ func main() {
 		var firstName, lastName, email, userTicket = getUserInput()
 
 		// function to validate user input
-		var isValidName, isValidEmail, isValidTicket = validateUser(firstName, lastName, email, userTicket, remainingTickets)
+		var isValidName, isValidEmail, isValidTicket = validateUser(firstName, lastName, email, userTicket)
 
 		// If the user data is valid, book the tickets
 		if isValidName && isValidEmail && isValidTicket {
 			// function to book tickets
-			var bookings, remainingTickets = bookTickets(firstName, lastName, userTicket, conferenceName, remainingTickets)
-			
+			bookTickets(firstName, lastName, userTicket)
+
 			// function to print the first name of the people who have booked tickets
-			var firstNames = printFirstName(bookings, conferenceName)
+			var firstNames = printFirstName()
 			fmt.Println("\nThe following people have booked tickets for the", conferenceName, ":", firstNames)
 
 			// If there are no tickets remaining, stop the loop
@@ -84,7 +84,7 @@ func getUserInput() (string, string, string, uint) {
 }
 
 // Validate the user's input
-func validateUser(firstName string, lastName string, email string, userTicket uint, remainingTickets uint) (bool, bool, bool) {
+func validateUser(firstName string, lastName string, email string, userTicket uint) (bool, bool, bool) {
 	var isValidName = len(firstName) > 2 && len(lastName) > 2
 
 	// Use to check if a string contains a substring
@@ -95,23 +95,8 @@ func validateUser(firstName string, lastName string, email string, userTicket ui
 	return isValidName, isValidEmail, isValidTicket
 }
 
-// Print the first name of the people who have booked tickets
-func printFirstName(bookings []string, conferenceName string) []string {
-	firstNames := []string{}
-
-	// _ is a blank identifier used to ignore the index
-	for _, name := range bookings {
-
-		// Use to split a string into substrings
-		var first = strings.Fields(name)
-
-		firstNames = append(firstNames, first[0])
-	}
-	return firstNames
-}
-
 // function for booking tickets
-func bookTickets(firstName string, lastName string, userTicket uint, conferenceName string, remainingTickets uint) ([]string, uint) {
+func bookTickets(firstName string, lastName string, userTicket uint) ([]string, uint) {
 	fmt.Println("\nThank you", firstName, lastName, "for booking", userTicket, "tickets for the", conferenceName)
 
 	// reduce the number of tickets
@@ -124,4 +109,19 @@ func bookTickets(firstName string, lastName string, userTicket uint, conferenceN
 	bookings = append(bookings, fullName)
 
 	return bookings, remainingTickets
+}
+
+// Print the first name of the people who have booked tickets
+func printFirstName() []string {
+	firstNames := []string{}
+
+	// _ is a blank identifier used to ignore the index
+	for _, name := range bookings {
+
+		// Use to split a string into substrings
+		var first = strings.Fields(name)
+
+		firstNames = append(firstNames, first[0])
+	}
+	return firstNames
 }
